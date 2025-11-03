@@ -1,0 +1,279 @@
+.calculator-page {
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  direction: rtl;
+}
+
+.calculator-page .container {
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px;
+  padding: 20px;
+}
+
+.form-container {
+  flex: 1;
+  max-width: 800px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.map-container {
+  flex: 1;
+  max-width: 500px;
+  height: 500px;
+  min-height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: block !important;
+  visibility: visible !important;
+  position: relative;
+  background-color: #f0f0f0;
+}
+
+#map {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 300px !important;
+  z-index: 1 !important;
+  border-radius: 8px;
+}
+
+.leaflet-container {
+  background: #f0f0f0;
+}
+
+.map-fallback {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+select, input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: 'Cairo', sans-serif;
+}
+
+select:focus, input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button, a.button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: 'Cairo', sans-serif;
+  transition: opacity 0.3s ease;
+}
+
+#whatsappLink {
+  background-color: #25D366;
+}
+
+button:hover, a.button:hover {
+  opacity: 0.9;
+}
+
+.result-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e8f5e9;
+  border-radius: 4px;
+  display: none;
+}
+
+.required:after {
+  content: " *";
+  color: red;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: 'Cairo', sans-serif;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}
+
+optgroup {
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+}
+
+.valuation-method {
+  margin-top: 16px;
+  color: #0c5b1e;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  width: 90%;
+  max-width: 400px;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #333;
+  font-family: 'Cairo', sans-serif;
+}
+
+.modal-content .form-group {
+  margin-bottom: 15px;
+}
+
+.modal-content button {
+  margin: 5px;
+}
+
+.modal-content .error {
+  display: block;
+}
+
+.cancel-btn {
+  background-color: #f44336;
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4CAF50;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#processingModal .modal-content {
+  text-align: center;
+  padding: 30px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .calculator-page .container {
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .form-container, .map-container {
+    max-width: 100%;
+  }
+  
+  .map-container {
+    height: 300px;
+    min-height: 200px;
+    margin-top: 20px;
+    order: 2;
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  .form-container {
+    order: 1;
+  }
+  
+  #map {
+    min-height: 200px;
+    height: 300px;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 10% auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 15px;
+  }
+  
+  .modal-content {
+    padding: 15px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+}

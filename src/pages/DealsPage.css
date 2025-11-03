@@ -1,0 +1,437 @@
+.deals-page {
+  min-height: 100vh;
+  background: var(--white);
+}
+
+.deals-hero {
+  background: linear-gradient(135deg, var(--brand-dark) 0%, #1a3a5c 100%);
+  padding: 220px 0 80px;
+  color: var(--white);
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--white);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.deals-content {
+  padding: 170px 0 80px;
+  background: var(--light-gray);
+}
+
+/* Filters Section */
+.filters-section {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-light);
+}
+
+.filters-section h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-family: var(--font-arabic);
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 1.5rem;
+  align-items: end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: var(--brand-dark);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-family: var(--font-arabic);
+  text-align: right;
+}
+
+.filter-group select {
+  padding: 12px 16px;
+  border: 2px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--white);
+  color: var(--brand-dark);
+  transition: all 0.3s ease;
+  font-family: var(--font-arabic);
+  text-align: right;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--brand-gold);
+  box-shadow: 0 0 0 3px rgba(188, 153, 117, 0.1);
+}
+
+.filter-group select:disabled {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.filter-group input {
+  padding: 12px 16px;
+  border: 2px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--white);
+  color: var(--brand-dark);
+  transition: all 0.3s ease;
+  font-family: var(--font-arabic);
+  width: 100%;
+  text-align: right;
+}
+
+.filter-group input:focus {
+  outline: none;
+  border-color: var(--brand-gold);
+  box-shadow: 0 0 0 3px rgba(188, 153, 117, 0.1);
+}
+
+.filter-group input:disabled {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.filter-group input::placeholder {
+  color: #999;
+  font-family: var(--font-arabic);
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+}
+
+.clear-filters-btn {
+  background: var(--brand-dark);
+  color: var(--white);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-arabic);
+  white-space: nowrap;
+}
+
+.clear-filters-btn:hover {
+  background: var(--brand-gold);
+  color: var(--brand-dark);
+  transform: translateY(-2px);
+}
+
+/* Neighborhood Search */
+.neighborhood-search-container {
+  position: relative;
+}
+
+.neighborhood-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 2px solid var(--brand-gold);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-light);
+  font-family: var(--font-arabic);
+  color: var(--brand-dark);
+  transition: all 0.2s ease;
+  text-align: right;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background: var(--brand-gold);
+  color: var(--brand-dark);
+}
+
+.suggestion-item:focus {
+  outline: none;
+  background: var(--brand-gold);
+  color: var(--brand-dark);
+}
+
+/* Results Info */
+.results-info {
+  background: var(--white);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--brand-gold);
+}
+
+.results-info p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--brand-dark);
+  font-family: var(--font-arabic);
+  text-align: right;
+}
+
+/* Location Badges */
+.property-location-details {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.location-badge {
+  background: var(--brand-dark);
+  color: var(--white);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: var(--font-arabic);
+  text-align: center;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+}
+
+.no-results h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 1rem;
+  font-family: var(--font-arabic);
+  text-align: center;
+}
+
+.no-results p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-family: var(--font-arabic);
+  text-align: center;
+}
+
+.deals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.property-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-light);
+  cursor: pointer;
+  position: relative;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.discount-tag {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ef4444;
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 10;
+}
+
+.property-header {
+  grid-column: 1;
+  text-align: right;
+}
+
+.property-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-arabic);
+  text-align: right;
+}
+
+.property-location {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-arabic);
+  text-align: right;
+}
+
+.property-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  grid-column: 2;
+}
+
+.property-details > div {
+  background: var(--light-gray);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--brand-dark);
+  font-family: var(--font-arabic);
+}
+
+.property-pricing {
+  grid-column: 3;
+  text-align: right;
+}
+
+.property-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--brand-gold);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-arabic);
+  text-align: right;
+}
+
+.property-price-per-sqm {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-family: var(--font-arabic);
+  text-align: right;
+}
+
+.property-button {
+  background: var(--brand-dark);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-arabic);
+  width: 100%;
+}
+
+.property-button:hover {
+  background: var(--brand-gold);
+  color: var(--brand-dark);
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .filter-actions {
+    justify-content: center;
+  }
+  
+  .filters-section {
+    padding: 1.5rem;
+  }
+  
+  .property-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .property-pricing {
+    text-align: center;
+    grid-column: 1;
+  }
+  
+  .property-details {
+    grid-column: 1;
+    justify-content: center;
+  }
+  
+  .deals-content {
+    padding: 60px 0;
+  }
+  
+  .discount-tag {
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+  }
+  
+  .location-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
+}

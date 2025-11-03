@@ -1,0 +1,118 @@
+/* Arabic Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+body {   
+  font-family: 'Cairo', 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #0f2241;
+  direction: ltr;
+  text-align: left;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+/* RTL Support */
+.App.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.App.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Global RTL/LTR styles */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0f2241;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1a3a5f;
+}
+
+/* Utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Button styles */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #0f2241;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn:hover {
+  background: #1a3a5f;
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: #0f2241;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #0f2241;
+  border: 2px solid #0f2241;
+}
+
+.btn-secondary:hover {
+  background: #0f2241;
+  color: #ffffff;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+}
