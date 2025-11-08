@@ -22,41 +22,27 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ navigateToPage }) => {
     e.preventDefault();
     setError('');
 
-    // Validation
-    if (!name.trim()) {
-      setError(t('nameRequired'));
-      return;
-    }
-
-    if (!email.trim()) {
-      setError(t('emailRequired'));
-      return;
-    }
-
-    if (password.length <= 5) {
-      setError(t('passwordLength'));
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError(t('passwordMismatch'));
-      return;
-    }
+    if (!name.trim()) return setError(t('nameRequired'));
+    if (!email.trim()) return setError(t('emailRequired'));
+    if (password.length <= 5) return setError(t('passwordLength'));
+    if (password !== confirmPassword) return setError(t('passwordMismatch'));
 
     setLoading(true);
+try {
+  const success = await register(name, email, password);
 
-    try {
-      const success = await register(name.trim(), email.trim(), password);
-      if (success) {
-        navigateToPage?.('home');
-      } else {
-        setError(t('emailExists'));
-      }
-    } catch (err) {
-      setError(t('registerError'));
-    } finally {
-      setLoading(false);
-    }
+  if (success) {
+    navigateToPage?.('home');
+  } else {
+    setError(t("emailExists"));
+  }
+} catch (err) {
+  setError(t("registerError"));
+  console.error(err);
+} finally {
+  setLoading(false);
+}
+
   };
 
   const handleLoginClick = () => {
@@ -87,21 +73,15 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ navigateToPage }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
-            {error && (
-              <div className="error-message">
-                {error}
-              </div>
-            )}
+            {error && <div className="error-message">{error}</div>}
 
             <div className="form-group">
-              <label htmlFor="name" className="form-label">
-                {t('name')}
-              </label>
+              <label htmlFor="name" className="form-label">{t('name')}</label>
               <input
                 type="text"
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 className="form-input"
                 required
                 placeholder={t('namePlaceholder')}
@@ -109,14 +89,12 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ navigateToPage }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email" className="form-label">
-                {t('email')}
-              </label>
+              <label htmlFor="email" className="form-label">{t('email')}</label>
               <input
                 type="email"
                 id="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="form-input"
                 required
                 placeholder={t('emailPlaceholder')}
@@ -124,14 +102,12 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ navigateToPage }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password" className="form-label">
-                {t('password')}
-              </label>
+              <label htmlFor="password" className="form-label">{t('password')}</label>
               <input
                 type="password"
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 className="form-input"
                 required
                 placeholder={t('passwordPlaceholder')}
@@ -139,25 +115,19 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ navigateToPage }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="confirmPassword" className="form-label">
-                {t('confirmPassword')}
-              </label>
+              <label htmlFor="confirmPassword" className="form-label">{t('confirmPassword')}</label>
               <input
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
                 className="form-input"
                 required
                 placeholder={t('confirmPasswordPlaceholder')}
               />
             </div>
 
-            <button
-              type="submit"
-              className="auth-button"
-              disabled={loading}
-            >
+            <button type="submit" className="auth-button" disabled={loading}>
               {loading ? t('common.loading') : t('register')}
             </button>
           </form>
@@ -165,11 +135,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ navigateToPage }) => {
           <div className="auth-footer">
             <p className="auth-switch-text">
               {t('haveAccount')}{' '}
-              <button
-                type="button"
-                className="auth-switch-link"
-                onClick={handleLoginClick}
-              >
+              <button type="button" className="auth-switch-link" onClick={handleLoginClick}>
                 {t('login')}
               </button>
             </p>

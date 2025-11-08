@@ -23,13 +23,17 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigateToPage }) => {
 
     try {
       const success = await login(email, password);
+
       if (success) {
-        navigateToPage?.('home');
+          navigateToPage?.("home");
       } else {
-        setError(t('loginError'));
+        setError(t("loginError"));
       }
+ 
+      
     } catch (err) {
       setError(t('loginError'));
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -63,21 +67,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigateToPage }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
-            {error && (
-              <div className="error-message">
-                {error}
-              </div>
-            )}
+            {error && <div className="error-message">{error}</div>}
 
             <div className="form-group">
-              <label htmlFor="email" className="form-label">
-                {t('email')}
-              </label>
+              <label htmlFor="email" className="form-label">{t('email')}</label>
               <input
                 type="email"
                 id="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="form-input"
                 required
                 placeholder={t('emailPlaceholder')}
@@ -85,25 +83,19 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigateToPage }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password" className="form-label">
-                {t('password')}
-              </label>
+              <label htmlFor="password" className="form-label">{t('password')}</label>
               <input
                 type="password"
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 className="form-input"
                 required
                 placeholder={t('passwordPlaceholder')}
               />
             </div>
 
-            <button
-              type="submit"
-              className="auth-button"
-              disabled={loading}
-            >
+            <button type="submit" className="auth-button" disabled={loading}>
               {loading ? t('common.loading') : t('login')}
             </button>
           </form>
@@ -111,11 +103,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigateToPage }) => {
           <div className="auth-footer">
             <p className="auth-switch-text">
               {t('noAccount')}{' '}
-              <button
-                type="button"
-                className="auth-switch-link"
-                onClick={handleRegisterClick}
-              >
+              <button type="button" className="auth-switch-link" onClick={handleRegisterClick}>
                 {t('register')}
               </button>
             </p>
@@ -127,3 +115,4 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigateToPage }) => {
 };
 
 export default LoginPage;
+

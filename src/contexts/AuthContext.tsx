@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface User {
   id: string;
   name: string;
   email: string;
-  password: string;
   createdAt: string;
 }
+
 
 interface AuthContextType {
   user: User | null;
@@ -19,121 +19,77 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuNe5ZAuHPuSQ162mkEh_p8yqIoytz9GvbcIDw4fvOckQPjp0BO8c5LXSFdRUSPPY/exec";
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Check if user is logged in from localStorage
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('user');
-      }
-    }
-    setLoading(false);
-  }, []);
-
-  const getUsers = (): User[] => {
-    try {
-      const usersData = localStorage.getItem('users');
-      return usersData ? JSON.parse(usersData) : [];
-    } catch (error) {
-      console.error('Error loading users:', error);
-      return [];
-    }
-  };
-
-  const saveUsers = (users: User[]): void => {
-    try {
-      localStorage.setItem('users', JSON.stringify(users));
-    } catch (error) {
-      console.error('Error saving users:', error);
-    }
-  };
-
-  const generateId = (): string => {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  };
-
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePassword = (password: string): boolean => {
-    return password.length > 5;
-  };
+  const [user, setUser] = useState<User | null>(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [loading, setLoading] = useState(false);
 
   const login = async (email: string, password: string): Promise<boolean> => {
+    setLoading(true);
     try {
-      const users = getUsers();
-      const foundUser = users.find(u => u.email === email && u.password === password);
-      
-      if (foundUser) {
-        setUser(foundUser);
-        localStorage.setItem('user', JSON.stringify(foundUser));
-        return true;
-      }
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'login', email, password }),
+      });
+
+      const data = await res.json();
+      if (data.success && data.user) {
+  const userData  = data.user; // remove password
+  setUser(userData);
+  localStorage.setItem('user', JSON.stringify(userData));
+  return true;
+}
+
       return false;
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch (err) {
+      console.error('Login error:', err);
       return false;
+    } finally {
+      setLoading(false);
     }
   };
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
+    setLoading(true);
     try {
-      // Validate inputs
-      if (!name.trim()) return false;
-      if (!validateEmail(email)) return false;
-      if (!validatePassword(password)) return false;
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'register', name, email, password }),
+      });
 
-      const users = getUsers();
-      
-      // Check if email already exists
-      if (users.find(u => u.email === email)) {
-        return false;
-      }
 
-      const newUser: User = {
-        id: generateId(),
-        name: name.trim(),
-        email: email.toLowerCase(),
-        password,
-        createdAt: new Date().toISOString()
-      };
-
-      users.push(newUser);
-      saveUsers(users);
-      setUser(newUser);
-      localStorage.setItem('user', JSON.stringify(newUser));
+      const data = await res.json();
+      if (data.success && data.user) {
+        const userData  = data.user; // remove password
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
       return true;
-    } catch (error) {
-      console.error('Registration error:', error);
+    }
+
       return false;
+    } catch (err) {
+      console.error('Register error:', err);
+      return false;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const logout = (): void => {
+  const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
   };
 
-  const value: AuthContextType = {
-    user,
-    isAuthenticated: !!user,
-    login,
-    register,
-    logout,
-    loading
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
@@ -141,8 +97,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 };
