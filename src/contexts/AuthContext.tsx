@@ -7,7 +7,6 @@ export interface User {
   createdAt: string;
 }
 
-
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
@@ -34,17 +33,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const res = await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'text/plain;charset=utf-8'  // CHANGED: Use text/plain to avoid OPTIONS preflight
+        },
         body: JSON.stringify({ action: 'login', email, password }),
       });
 
       const data = await res.json();
       if (data.success && data.user) {
-  const userData  = data.user; // remove password
-  setUser(userData);
-  localStorage.setItem('user', JSON.stringify(userData));
-  return true;
-}
+        const userData = data.user;
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+        return true;
+      }
 
       return false;
     } catch (err) {
@@ -61,18 +62,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const res = await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'text/plain;charset=utf-8'  // CHANGED: Use text/plain to avoid OPTIONS preflight
+        },
         body: JSON.stringify({ action: 'register', name, email, password }),
       });
 
-
       const data = await res.json();
       if (data.success && data.user) {
-        const userData  = data.user; // remove password
+        const userData = data.user;
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
-      return true;
-    }
+        return true;
+      }
 
       return false;
     } catch (err) {
