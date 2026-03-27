@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '../lib/supabase';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 export interface User {
   id: string;
@@ -18,38 +20,40 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9xf3P7JdVJMgMDcjtIWWsSGGzn2M1YTHlIqOrjeR7kZhw2pMVRprzES48b1yP7L0J/exec";
+const toUser = (supabaseUser: SupabaseUser): User => ({
+  id: supabaseUser.id,
+  name: supabaseUser.user_metadata?.name || supabaseUser.email || '',
+  email: supabaseUser.email || '',
+  createdAt: supabaseUser.created_at,
+});
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('user');
-    return saved ? JSON.parse(saved) : null;
-  });
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Restore session on load
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ? toUser(session.user) : null);
+      setLoading(false);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ? toUser(session.user) : null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true);
     try {
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 
-          'Content-Type': 'text/plain;charset=utf-8'  // CHANGED: Use text/plain to avoid OPTIONS preflight
-        },
-        body: JSON.stringify({ action: 'login', email, password }),
-      });
-
-      const data = await res.json();
-      if (data.success && data.user) {
-        const userData = data.user;
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-        return true;
-      }
-
-      return false;
-    } catch (err) {
-      console.error('Login error:', err);
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error || !data.user) return false;
+      setUser(toUser(data.user));
+      return true;
+    } catch {
       return false;
     } finally {
       setLoading(false);
@@ -59,35 +63,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     setLoading(true);
     try {
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 
-          'Content-Type': 'text/plain;charset=utf-8'  // CHANGED: Use text/plain to avoid OPTIONS preflight
-        },
-        body: JSON.stringify({ action: 'register', name, email, password }),
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { name } },
       });
-
-      const data = await res.json();
-      if (data.success && data.user) {
-        const userData = data.user;
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-        return true;
-      }
-
-      return false;
-    } catch (err) {
-      console.error('Register error:', err);
+      if (error || !data.user) return false;
+      setUser(toUser(data.user));
+      return true;
+    } catch {
       return false;
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem('user');
   };
 
   return (
